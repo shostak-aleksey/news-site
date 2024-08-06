@@ -4,8 +4,8 @@ import { useTheme } from 'app/providers/ThemeProvider';
 import { AppRouter } from 'app/providers/router';
 import { Navbar } from 'widgets/Navbar';
 import { Sidebar } from 'widgets/Sidebar';
-import { useDispatch } from 'react-redux';
-import { userActions } from 'entities/User';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserInitiated, userActions } from 'entities/User';
 
 function App() {
     const { theme } = useTheme();
@@ -15,13 +15,15 @@ function App() {
         dispatch(userActions.initAuthData());
     }, [dispatch]);
 
+    const initiated = useSelector(getUserInitiated);
+
     return (
         <div className={classNames('app', {}, [theme])}>
             <Suspense fallback="">
                 <Navbar />
                 <div className="content-page">
                     <Sidebar />
-                    <AppRouter />
+                    {initiated && <AppRouter />}
                 </div>
             </Suspense>
         </div>
